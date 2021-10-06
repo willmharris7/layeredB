@@ -1,15 +1,3 @@
-// import bodyParser from 'body-parser';
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('<h1>Hello from the TypeScript world!</h1>');
-// });
-
-// app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 // const express = require('express')
 import express, { Express, Request, Response } from 'express'
 import helmet from 'helmet';
@@ -36,14 +24,15 @@ app.post('/api/world', (req: Request, res: Response) => {
 })
 // Test endpoints //
 
-// app.get('/api/dbs', async function (req: Request, res: Response) {
-//   await client.connect()
-//   dbList = await client.db().admin().listDatabases()
-//   dbNames = []
-//   dbList.databases.forEach(db => dbNames.push(db.name))
-//   await client.close()
-//   res.send({ express: dbNames })
-// })
+app.get('/api/dbs', async function (req: Request, res: Response) {
+  await client.connect()
+  console.log("in app")
+  const dbList : any = await client.db().admin().listDatabases()
+  let dbNames : Array<String> = []
+  dbList.databases.forEach((db : any) => dbNames.push(db.name))
+  await client.close()
+  res.send({ express: dbNames })
+})
 
 // app.get('/api/top5', async function (req: Request, res: Response) {
 //   await client.connect()
