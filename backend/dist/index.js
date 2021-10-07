@@ -39,23 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// const express = require('express')
 var express_1 = __importDefault(require("express"));
 var helmet_1 = __importDefault(require("helmet"));
-var dotenv_1 = __importDefault(require("dotenv"));
+require('dotenv').config();
 var MongoClient = require('mongodb').MongoClient;
 var app = (0, express_1.default)();
-dotenv_1.default.config();
 var PORT = process.env.PORT || 8080;
 var uri = "mongodb+srv://first_test_user:im7p9hcVdHo5aS@cluster0.1m63c.mongodb.net/test?retryWrites=true&w=majority";
 var client = new MongoClient(uri);
-app.use((0, helmet_1.default)());
+app.use((0, helmet_1.default)()); // Adds security headers 
 app.use(express_1.default.json()); // replaces bodyParser.json()
 app.use(express_1.default.urlencoded({ extended: true })); // for Postman: use x-www-form-urlencoded to post 
 app.listen(PORT);
 // Test endpoints //
 // req is required even for simple get paths, because express interprets the first param as Request
 app.get('/api/hello', function (req, res) {
+    console.log(process.env.TEST_VARIABLE);
     res.send({ express: 'Hello From Express' });
 });
 app.post('/api/world', function (req, res) {

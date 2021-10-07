@@ -1,14 +1,11 @@
-// const express = require('express')
 import express, { Express, Request, Response } from 'express'
-import helmet from 'helmet';
-import dotenv from 'dotenv';
+import helmet from 'helmet'
 const {MongoClient} = require('mongodb')
 const app: Express = express()
-dotenv.config()
 const PORT = process.env.PORT || 8080
 const uri = "mongodb+srv://first_test_user:im7p9hcVdHo5aS@cluster0.1m63c.mongodb.net/test?retryWrites=true&w=majority"
 const client = new MongoClient(uri)
-app.use(helmet());
+app.use(helmet()); // Adds security headers 
 app.use(express.json()) // replaces bodyParser.json()
 app.use(express.urlencoded({extended: true})) // for Postman: use x-www-form-urlencoded to post 
 app.listen(PORT)
