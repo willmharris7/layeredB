@@ -86,14 +86,18 @@ app.get('/api/dbs', function (req, res) {
 });
 app.get('/api/top5', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var dbResp, top5Listings, top5ListingsNamesBedrooms, _i, top5Listings_1, listing;
+        var top5Listings, top5ListingsNamesBedrooms, _i, top5Listings_1, listing;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
-                    dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find().limit(5);
-                    return [4 /*yield*/, dbResp.toArray()];
+                    return [4 /*yield*/, client
+                            .db('sample_airbnb')
+                            .collection('listingsAndReviews')
+                            .find()
+                            .limit(5)
+                            .toArray()];
                 case 2:
                     top5Listings = _a.sent();
                     top5ListingsNamesBedrooms = [];

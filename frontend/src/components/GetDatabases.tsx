@@ -10,6 +10,7 @@ function GetDatabases() {
 
     async function getDbNames() {
         const backendResp = await fetch("/api/dbs")
+        console.log(backendResp)
         const body = await backendResp.json()
         setDbNames(body["express"])
     }

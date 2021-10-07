@@ -16,7 +16,7 @@ function SearchBedrooms() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({post: formInput})
+            body: JSON.stringify({"test_key": formInput})
         })
         const body = await backendResp.json()
         setBedroomNames(body["express"])

@@ -35,7 +35,7 @@ app.get('/api/dbs', async function (req: Request, res: Response) {
 
 app.get('/api/top5', async function (req: Request, res: Response) {
   await client.connect()
-  const top5Listings: any[] = client
+  const top5Listings: any[] = await client
     .db('sample_airbnb')
     .collection('listingsAndReviews')
     .find()
