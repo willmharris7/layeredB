@@ -1,7 +1,4 @@
 "use strict";
-// import bodyParser from 'body-parser';
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,11 +39,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('<h1>Hello from the TypeScript world!</h1>');
-// });
-// app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // const express = require('express')
 var express_1 = __importDefault(require("express"));
 var helmet_1 = __importDefault(require("helmet"));
@@ -62,7 +54,7 @@ app.use(express_1.default.json()); // replaces bodyParser.json()
 app.use(express_1.default.urlencoded({ extended: true })); // for Postman: use x-www-form-urlencoded to post 
 app.listen(PORT);
 // Test endpoints //
-// req is required even for simple get paths, because express interprests the first param as Request
+// req is required even for simple get paths, because express interprets the first param as Request
 app.get('/api/hello', function (req, res) {
     res.send({ express: 'Hello From Express' });
 });
@@ -78,7 +70,6 @@ app.get('/api/dbs', function (req, res) {
                 case 0: return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
-                    console.log("in app");
                     return [4 /*yield*/, client.db().admin().listDatabases()];
                 case 2:
                     dbList = _a.sent();
@@ -93,26 +84,61 @@ app.get('/api/dbs', function (req, res) {
         });
     });
 });
-// app.get('/api/top5', async function (req: Request, res: Response) {
-//   await client.connect()
-//   const dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find().limit(5)
-//   top5Listings = await dbResp.toArray()
-//   top5ListingsNamesBedrooms = []
-//   for (const listing of top5Listings) {
-//     top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
-//   }
-//   await client.close()
-//   res.send({ express: top5ListingsNamesBedrooms })
-// })
-// app.post('/api/bedrooms', async function (req: Request, res: Response) {
-//   const number = parseInt(Object.values(req.body)[0])
-//   await client.connect()
-//   const dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find({"bedrooms": number}).limit(5)
-//   top5Listings = await dbResp.toArray()
-//   top5ListingsNamesBedrooms = []
-//   for (const listing of top5Listings) {
-//     top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
-//   }
-//   await client.close()
-//   res.send({ express: top5ListingsNamesBedrooms })
-// })
+app.get('/api/top5', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dbResp, top5Listings, top5ListingsNamesBedrooms, _i, top5Listings_1, listing;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find().limit(5);
+                    return [4 /*yield*/, dbResp.toArray()];
+                case 2:
+                    top5Listings = _a.sent();
+                    top5ListingsNamesBedrooms = [];
+                    for (_i = 0, top5Listings_1 = top5Listings; _i < top5Listings_1.length; _i++) {
+                        listing = top5Listings_1[_i];
+                        top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms");
+                    }
+                    return [4 /*yield*/, client.close()];
+                case 3:
+                    _a.sent();
+                    res.send({ express: top5ListingsNamesBedrooms });
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
+app.post('/api/bedrooms', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var n, top5Listings, top5ListingsNamesBedrooms, _i, top5Listings_2, listing;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    n = parseInt(req.body["test_key"]);
+                    return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client
+                            .db('sample_airbnb')
+                            .collection('listingsAndReviews')
+                            .find({ "bedrooms": n })
+                            .limit(5)
+                            .toArray()];
+                case 2:
+                    top5Listings = _a.sent();
+                    top5ListingsNamesBedrooms = [];
+                    for (_i = 0, top5Listings_2 = top5Listings; _i < top5Listings_2.length; _i++) {
+                        listing = top5Listings_2[_i];
+                        top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms");
+                    }
+                    return [4 /*yield*/, client.close()];
+                case 3:
+                    _a.sent();
+                    res.send({ express: top5ListingsNamesBedrooms });
+                    return [2 /*return*/];
+            }
+        });
+    });
+});

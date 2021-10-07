@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: true})) // for Postman: use x-www-form-url
 app.listen(PORT)
 
 // Test endpoints //
-// req is required even for simple get paths, because express interprests the first param as Request
+// req is required even for simple get paths, because express interprets the first param as Request
 app.get('/api/hello', (req: Request, res: Response) => {
   res.send({ express: 'Hello From Express' })
 })
@@ -26,35 +26,42 @@ app.post('/api/world', (req: Request, res: Response) => {
 
 app.get('/api/dbs', async function (req: Request, res: Response) {
   await client.connect()
-  console.log("in app")
-  const dbList : any = await client.db().admin().listDatabases()
-  let dbNames : Array<String> = []
-  dbList.databases.forEach((db : any) => dbNames.push(db.name))
+  const dbList: any = await client.db().admin().listDatabases()
+  let dbNames: string[] = []
+  dbList.databases.forEach((db: any) => dbNames.push(db.name))
   await client.close()
   res.send({ express: dbNames })
 })
 
-// app.get('/api/top5', async function (req: Request, res: Response) {
-//   await client.connect()
-//   const dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find().limit(5)
-//   top5Listings = await dbResp.toArray()
-//   top5ListingsNamesBedrooms = []
-//   for (const listing of top5Listings) {
-//     top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
-//   }
-//   await client.close()
-//   res.send({ express: top5ListingsNamesBedrooms })
-// })
+app.get('/api/top5', async function (req: Request, res: Response) {
+  await client.connect()
+  const top5Listings: any[] = client
+    .db('sample_airbnb')
+    .collection('listingsAndReviews')
+    .find()
+    .limit(5)
+    .toArray()
+  let top5ListingsNamesBedrooms: string[] = []
+  for (const listing of top5Listings) {
+    top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
+  }
+  await client.close()
+  res.send({ express: top5ListingsNamesBedrooms })
+})
 
-// app.post('/api/bedrooms', async function (req: Request, res: Response) {
-//   const number = parseInt(Object.values(req.body)[0])
-//   await client.connect()
-//   const dbResp = client.db('sample_airbnb').collection('listingsAndReviews').find({"bedrooms": number}).limit(5)
-//   top5Listings = await dbResp.toArray()
-//   top5ListingsNamesBedrooms = []
-//   for (const listing of top5Listings) {
-//     top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
-//   }
-//   await client.close()
-//   res.send({ express: top5ListingsNamesBedrooms })
-// })
+app.post('/api/bedrooms', async function (req: Request, res: Response) {
+  const n: number = parseInt(req.body["test_key"])
+  await client.connect()
+  const top5Listings: any[] = await client
+    .db('sample_airbnb')
+    .collection('listingsAndReviews')
+    .find({"bedrooms": n})
+    .limit(5)
+    .toArray()
+  let top5ListingsNamesBedrooms: string[] = []
+  for (const listing of top5Listings) {
+    top5ListingsNamesBedrooms.push(listing.name + " has " + listing.bedrooms + " bedrooms")
+  }
+  await client.close()
+  res.send({ express: top5ListingsNamesBedrooms })
+})
